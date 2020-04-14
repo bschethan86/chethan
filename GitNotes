@@ -1,0 +1,256 @@
+internet test
+[root@jenkins-master ~]# ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=49 time=43.3 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=49 time=44.5 ms
+
+https://dzone.com/articles/top-20-git-commands-with-examples
+
+
+should be on root account
+[root@jenkins-master ~]# whoami
+root
+
+OS - ver
+[root@jenkins-master ~]# cat /etc/redhat-release
+CentOS Linux release 7.7.1908 (Core)
+
+Git install package
+[root@jenkins-master ~]# yum install git -y
+
+GIT should be installed 
+[root@jenkins-master ~]# which git
+/usr/bin/git
+
+[root@jenkins-master ~]# useradd clone
+[root@jenkins-master ~]# passwd clone
+Changing password for user clone.
+New password:
+BAD PASSWORD: The password contains the user name in some form
+Retype new password:
+passwd: all authentication tokens updated successfully.
+[root@jenkins-master ~]# su - clone
+[clone@jenkins-master ~]$ whoami
+clone
+
+[clone@jenkins-master ~]$ git config --global user.name "chethan"
+[clone@jenkins-master ~]$ git config --global user.email "bschethan86@gmail.com"
+[clone@jenkins-master ~]$ git config --global -l
+user.name=chethan
+user.email=bschethan86@gmail.com
+[clone@jenkins-master ~]$
+
+[clone@jenkins-master ~]$ mkdir test
+[clone@jenkins-master ~]$ cd test/
+
+[clone@jenkins-master test]$ git remote add origin https://github.com/bschethan86/testlab.git
+[clone@jenkins-master test]$ git push -u origin master
+
+[clone@jenkins-master test]$ git push -u origin master
+Username for 'https://github.com': bschethan86
+Password for 'https://bschethan86@github.com':
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 216 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/bschethan86/testlab.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+generate a ssh-key gen
+[clone@jenkins-master ~]$ ssh-keygen
+Your identification has been saved in /home/clone/.ssh/id_rsa.
+Your public key has been saved in /home/clone/.ssh/id_rsa.pub.
+
+[clone@jenkins-master ~]$ cd /home/clone/.ssh/
+[clone@jenkins-master .ssh]$ ls -l
+total 8
+-rw-------. 1 clone clone 1675 Mar  3 10:12 id_rsa
+-rw-r--r--. 1 clone clone  402 Mar  3 10:12 id_rsa.pub
+
+[clone@jenkins-master .ssh]$ cat id_rsa
+[clone@jenkins-master .ssh]$ cat id_rsa.pub
+
+
+repo setting --> Deploy keys -> Add deploy keys --> name it --> paste the pub keys
+
+[clone@jenkins-master lab]$ git clone git@github.com:bschethan86/testlab.git
+
+git branch --> only master branck was exists 
+i have created new branch from centrol called lab1
+git branch --> there was no reflection on new branch 
+git fetch --> it will reload the branch config
+[clone@jenkins-master testlab]$ git branch ---> when i reran the cmd the new new was refelcting 
+* lab1
+  master
+[clone@jenkins-master testlab]$ git status --> working dir was master
+# On branch master
+
+[clone@jenkins-master testlab]$ git checkout lab1 --> switched from master to lab1
+Switched to a new branch 'lab1'
+
+[clone@jenkins-master testlab]$ git status --> to check which branch i was woking with 
+# On branch lab1
+
+[clone@jenkins-master testlab]$ git checkout master --> switching back master 
+Switched to branch 'master'
+
+
+create branches from local 
+[clone@jenkins-master testlab]$ git branch lab2 --> created new branch lab2 from local
+[clone@jenkins-master testlab]$ git checkout -b lab3 --> created a new branch lab3 and do checkout 
+[clone@jenkins-master testlab]$ cat > lab3  --> added a files on lab3 branch
+file3
+[clone@jenkins-master testlab]$ git status
+# On branch lab3
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       lab3
+
+[clone@jenkins-master testlab]$ git add --all
+[clone@jenkins-master testlab]$ git commit -m "lab3 added a new file"
+[clone@jenkins-master testlab]$ git push origin lab3 ---> push will ensure the new branch will added on central if not exists
+
+[clone@jenkins-master testlab]$ git checkout lab2 ---> switching to lab2
+Switched to branch 'lab2'
+[clone@jenkins-master testlab]$ git status
+# On branch lab2
+
+[clone@jenkins-master testlab]$ cat > lab2
+data added
+^C
+[clone@jenkins-master testlab]$ cat > lab2dontadd --> created a milti files but added only one file for commit
+dont che ckout
+^C
+[clone@jenkins-master testlab]$ ls -ltra
+total 12
+drwxrwxr-x. 3 clone clone  21 Mar  3 10:19 ..
+-rw-rw-r--. 1 clone clone  10 Mar  3 10:19 README.md
+drwxrwxr-x. 8 clone clone 203 Mar  3 11:29 .git
+-rw-rw-r--. 1 clone clone  11 Mar  3 11:29 lab2
+drwxrwxr-x. 3 clone clone  66 Mar  3 11:29 .
+-rw-rw-r--. 1 clone clone  15 Mar  3 11:29 lab2dontadd
+[clone@jenkins-master testlab]$ git status
+# On branch lab2
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       lab2
+#       lab2dontadd
+
+[clone@jenkins-master testlab]$ git add lab2 --> created a milti files but added only one file for commit
+[clone@jenkins-master testlab]$ git commit -m "lab2 data"
+
+[clone@jenkins-master testlab]$ git push origin lab2 ---> here only create a single files
+
+$ git pull
+$ git checkout -b [name_of_your_new_branch]
+$ git push origin [name_of_your_new_branch]
+When you want to commit something in your branch, be sure to be in your branch. Add -u parameter to set-upstream.
+
+https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
+
+You can see all the branches created by using :
+
+$ git branch -a
+Which will show :
+
+* approval_messages
+  master
+  master_clean
+Add a new remote for your branch :
+
+$ git remote add [name_of_your_remote] [name_of_your_new_branch]
+Push changes from your commit into your branch :
+
+$ git push [name_of_your_new_remote] [url]
+Update your branch when the original branch from official repository has been updated :
+
+$ git fetch [name_of_your_remote]
+Then you need to apply to merge changes if your branch is derivated from develop you need to do :
+
+$ git merge [name_of_your_remote]/develop
+Delete a branch on your local filesystem :
+
+$ git branch -d [name_of_your_new_branch]
+To force the deletion of local branch on your filesystem :
+
+$ git branch -D [name_of_your_new_branch]
+Delete the branch on github :
+
+$ git push origin :[name_of_your_new_branch]
+The only difference is the: to say delete, you can do it too by using GitHub interface to remove branch: https://help.github.com/articles/deleting-unused-branches.
+
+If you want to change default branch, it's so easy with GitHub, in your fork go into Admin and in the drop-down list default branch choose what you want.
+
+If you want create a new branch:
+
+$ git branch <name_of_your_new_branch>
+
+cd ../
+rm -rf testlab
+git clone -b lab2 git@github.com:bschethan86/testlab.git --> to do clone from different branch name where by default it will clone master
+[clone@jenkins-master testlab]$ git status ---> to check the status 
+# On branch lab2
+nothing to commit, working directory clean
+
+[clone@jenkins-master testlab]$ cat lab2 --> added multipal lines
+data added
+line2
+line3
+line4
+line5
+
+[clone@jenkins-master testlab]$ cat >> lab2
+line6
+line7
+
+[clone@jenkins-master testlab]$ git add lab2 ---> added the chnages to stage
+[clone@jenkins-master testlab]$ git status
+# On branch lab2
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   lab2
+#
+[clone@jenkins-master testlab]$ git commit -m "added 5line" 
+
+
+[clone@jenkins-master testlab]$ git log
+commit 3748cd15b01a9cebfb90779ad4bbd78b12831ec6
+Author: chethan <bschethan86@gmail.com>
+Date:   Tue Mar 3 12:24:59 2020 +0530
+
+    added 6 and 7 added
+
+[clone@jenkins-master testlab]$ git revert 3748cd15b01a9cebfb90779ad4bbd78b12831ec6 ---> check the commit id to restore the file back
+
+[clone@jenkins-master testlab]$ cat lab2 --> local was restored
+[clone@jenkins-master testlab]$ git push origin lab2 --> pushing back to central 
+
+
+
+
+
+https://try.github.io/
+http://git-school.github.io/visualizing-git/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
