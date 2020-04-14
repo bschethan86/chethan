@@ -1,0 +1,389 @@
+ 8  systemctl restart sshd
+    9  passwd centos
+   10  systemctl restart sshd
+   11  vi /etc/ssh/sshd_config
+   12  vi /etc/cloud/cloud.cfg
+   13  reboot
+   14  hostname
+   15  hostnamectl set-hostname k8smaster
+   16  bash
+   17  nproc
+   18  free -g
+   19  dmidecode
+   20  swapoff -a
+   21  cat /etc/fstab
+   22  getenforce
+   23  setenforce 0
+   24  getenforce
+   25  vi /etc/selinux/config
+   26  getenforce
+   27  ip a
+   28  vi /etc/hosts
+   29  ping k8sclient
+   30  cat /etc/hosts
+   31  yum install -y yum-utils device-mapper-persistent-data lvm2
+   32  yum-config-manager --add-repo   https://download.docker.com/linux/centos/docker-ce.repo
+   33  yum install -y   containerd.io-1.2.10   docker-ce-19.03.4   docker-ce-cli-19.03.4
+   34  mkdir /etc/docker
+   35  cat > /etc/docker/daemon.json <<EOF
+   36  {
+   37    "exec-opts": ["native.cgroupdriver=systemd"],
+   38    "log-driver": "json-file",
+   39    "log-opts": {
+   40      "max-size": "100m"
+   41    },
+   42    "storage-driver": "overlay2",
+   43    "storage-opts": [
+   44      "overlay2.override_kernel_check=true"
+   45    ]
+   46  }
+   47  EOF
+   48  mkdir -p /etc/systemd/system/docker.service.d
+   49  systemctl daemon-reload
+   50  systemctl restart docker
+   51  systemctl enable docker
+   52  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+   53  [kubernetes]
+   54  name=Kubernetes
+   55  baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+   56  enabled=1
+   57  gpgcheck=1
+   58  repo_gpgcheck=1
+   59  gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+   60  EOF
+   61  yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+   62  systemctl enable --now kubelet
+   63  systemctl status kubelet
+   64  ip a
+   65  kubeadm init --apiserver-advertise-address=172.31.40.3 --pod-network-cidr=192.168.0.0/16
+   66  ls -ltr
+   67  ls -ltr /etc/kubernetes/admin.conf
+   68  export KUBECONFIG=/etc/kubernetes/admin.conf
+   69  kubectl get nodes
+   70  kubectl get pods --all-namespaces
+   71  kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+   72  kubectl get pods --all-namespaces
+   73  kubectl get nodes
+   74  ls -la
+   75  vi .bashrc
+   76  kubectl get nodes
+   77  cat <<EOF > /etc/sysctl.d/k8s.conf
+   78  net.bridge.bridge-nf-call-ip6tables = 1
+   79  net.bridge.bridge-nf-call-iptables = 1
+   80  EOF
+   81  sysctl --system
+   82  kubectl get nodes
+   83  history
+   84  kubectl get nodes
+   85  kubectl get nodes --show-labels
+   86  kubectl label node k8sclient node-role.kubernetes.io/client=
+   87  kubectl get nodes
+   88  docker ps -a
+   89  kubectl get pods -n kube-system
+   90  find / -name etcd*
+   91  cat /etc/kubernetes/manifests/etcd.yaml
+   92  kubectl get nodes
+   93  vi /etc/hosts
+   94  hostnamectl set-hostname --help
+   95  kubectl config --help
+   96  kubectl config get-clusters
+   97  kubectl delete --help
+   98  kubectl get nodes
+   99  kubectl delete node k8sclient
+  100  kubectl get nodes
+  101  kubeadm token list
+  102  vi /etc/hosts
+  103  kubeadm token create --print-join-command
+  104  kubectl get nodes
+  105  history
+  106  kubeadm token list
+  107  kubectl get nodes
+  108  cat /etc/hosts
+  109  history
+[root@k8smaster ~]#
+========================================
+ 14  nproc
+   15  free -g
+   16  cat /proc/meminfo
+   17  free -a
+   18  free -m
+   19  dmidecode
+   20  cat /etc/fstab
+   21  setenforce 0
+   22  getenforce
+   23  vi /etc/selinux/config
+   24  ip a
+   25  vi /etc/hosts
+   26  ping k8smaster
+   27  hostname
+   28  hostnamectl set-hostname k8sclient
+   29  bash
+   30  vi /etc/hosts
+   31  kubectl delete --help
+   32  kubectl delete node --help
+   33  ip a
+   34  cat /etc/hosts
+   35  kubeadm join 172.31.38.218:6443 --token 7zrfe7.smhcq8aw6vt6cgz1     --dis                                                                                                             covery-token-ca-cert-hash sha256:061406183688879c5ba1c0841c9af488cc055e7ea86047c                                                                                                             007c2e65da2643383
+   36  ls -ltr  /etc/kubernetes/pki/ca.crt
+   37  rm -rf  /etc/kubernetes/pki/ca.crt
+   38  rm -rf /etc/kubernetes/kubelet.conf
+   39  kubeadm join 172.31.38.218:6443 --token 7zrfe7.smhcq8aw6vt6cgz1     --dis                                                                                                             covery-token-ca-cert-hash sha256:061406183688879c5ba1c0841c9af488cc055e7ea86047c                                                                                                             007c2e65da2643383
+   40  kubeadm reset
+   41  kubeadm join 172.31.38.218:6443 --token 7zrfe7.smhcq8aw6vt6cgz1     --dis                                                                                                             covery-token-ca-cert-hash sha256:061406183688879c5ba1c0841c9af488cc055e7ea86047c                                                                                                             007c2e65da2643383
+   42  vi /etc/hosts
+   43  history
+   44  kubeadm --help
+   45  cat /etc/kubernetes/kubelet.conf
+   46  history
+   47  yum install -y yum-utils device-mapper-persistent-data lvm2
+   48  yum-config-manager --add-repo   https://download.docker.com/linux/centos/                                                                                                             docker-ce.repo
+   49  yum install -y   containerd.io-1.2.10   docker-ce-19.03.4   docker-ce-cli                                                                                                             -19.03.4
+   50  mkdir /etc/docker
+   51  cat > /etc/docker/daemon.json <<EOF
+   52  {
+   53    "exec-opts": ["native.cgroupdriver=systemd"],
+   54    "log-driver": "json-file",
+   55    "log-opts": {
+   56      "max-size": "100m"
+   57    },
+   58    "storage-driver": "overlay2",
+   59    "storage-opts": [
+   60      "overlay2.override_kernel_check=true"
+   61    ]
+   62  }
+   63  EOF
+   64  mkdir -p /etc/systemd/system/docker.service.d
+   65  systemctl daemon-reload
+   66  systemctl restart docker
+   67  systemctl enable docker
+   68  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+   69  [kubernetes]
+   70  name=Kubernetes
+   71  baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+   72  enabled=1
+   73  gpgcheck=1
+   74  repo_gpgcheck=1
+   75  gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://pack                                                                                                             ages.cloud.google.com/yum/doc/rpm-package-key.gpg
+   76  EOF
+   77  yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+   78  systemctl enable --now kubelet
+   79  systemctl enable status kubelet
+   80  systemctl status kubelet
+   81  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0
+   82  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0
+   83  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0 `--ignore-preflight-errors=...`
+   84  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0
+   85  cat <<EOF > /etc/sysctl.d/k8s.conf
+   86  net.bridge.bridge-nf-call-ip6tables = 1
+   87  net.bridge.bridge-nf-call-iptables = 1
+   88  EOF
+   89  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0
+   90  sysctl --system
+   91  kubeadm join 172.31.40.3:6443 --token 0jb7bs.8jdeoesblvkkxheg     --disco                                                                                                             very-token-ca-cert-hash sha256:ee716f96068be1f041987873766f3d2156ec7079924a65dad                                                                                                             a9b10762ef514f0
+   92  history
+   93  k8sclient   Ready    client   67m   v1.17.3
+   94  hostnamectl set-hostname vidya
+   95  bash
+   96  history
+[root@vidya ~]#
+==============================================================================
+
+
+
+kubectl get cs ---> to see the status for health
+kubectl get nodes --> ready state and node list
+
+kubectl get nodes --show-labels --> chech the label names
+
+
+
+
+kubectl label node node1 node-role.kubernetes.io/client= --> (need to check)
+
+kubectl get pods -n kube-system  ---> releated to kube list to check system state is running
+
+
+kubectl create deployment web1 --image=httpd --> to create new pod
+
+[root@master ~]# kubectl get deployment  -->to list including replica
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+chethan   1/1     1            1           12h
+web1      1/1     1            1           47s
+
+[root@master ~]# kubectl get pods --> to list the pod names
+NAME                       READY   STATUS    RESTARTS   AGE
+chethan-5575d6655c-v6mgt   1/1     Running   1          12h
+web1-54f455899d-mx6sd      1/1     Running   0          36s
+
+
+[root@master ~]# kubectl get rs  -> to list replica 
+NAME                 DESIRED   CURRENT   READY   AGE
+chethan-5575d6655c   1         1         1       12h
+web1-54f455899d      1         1         1       2m31s
+
+kubectl describe pod web1
+
+
+[root@master ~]# kubectl decribe pod web1  --> to check in details
+[root@master ~]# kubectl describe rs web1 --> similer to inspect
+
+
+[root@master ~]# kubectl delete rs web1-54f455899d   --> even if you delete it will not
+replicaset.apps "web1-54f455899d" deleted
+[root@master ~]# kubectl get rs
+NAME                 DESIRED   CURRENT   READY   AGE
+chethan-5575d6655c   1         1         1       12h
+web1-54f455899d      1         1         0       5s
+
+
+kubectl delete deployment web1 --> to delete the deploment  permently
+
+kubectl get pods -o wide  --> full details
+ 
+kubectl get nodes -o wide --> full details of nodes
+
+
+
+================== namespace =================
+[root@master ~]#  kubectl get namespace   --> list
+NAME              STATUS   AGE
+default           Active   3d22h
+kube-node-lease   Active   3d22h
+kube-public       Active   3d22h
+kube-system       Active   3d22h
+
+[root@master ~]# kubectl create namespace linux
+namespace/linux created
+
+[root@master ~]#  kubectl get namespace
+NAME              STATUS   AGE
+default           Active   3d22h
+kube-node-lease   Active   3d22h
+kube-public       Active   3d22h
+kube-system       Active   3d22h
+linux             Active   37s
+
+
+[root@master ~]#  kubectl create deployment web2 -n linux --image=httpd
+deployment.apps/web2 created
+
+
+[root@master ~]# kubectl get deployment  --> it will not show
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+chethan   1/1     1            1           12h
+[root@master ~]# kubectl get deployment -n linux --> it will show up
+NAME   READY   UP-TO-DATE   AVAILABLE   AGE
+web2   1/1     1            1           38s
+
+
+================ services ==================
+
+it is a networking object and use IP tables
+
+there are 3 types 
+1. Cluseter IP --> internal ( private )
+2. nodeport --> pubilc
+3. loadbalancer --> pubilc 
+
+
+kubectl expose --help 
+
+Usage:
+  kubectl expose (-f FILENAME | TYPE NAME) [--port=port] [--protocol=TCP|UDP|SCTP] [--target-port=number-or-name]
+[--name=name] [--external-ip=external-ip-of-service] [--type=type] [options]
+
+template format is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+      --type='': Type for this service: ClusterIP, NodePort, LoadBalancer, or ExternalName. Default is 'ClusterIP'.
+
+
+[root@master ~]# kubectl run web3 --image=httpd   
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+deployment.apps/web3 created
+[root@master ~]# kubectl expose deployment web3 --port=80  --target-port=8088 --name=<service name> --type=NodePort
+service/linux exposed
+
+kubectl get all --> to list all
+
+[root@master ~]# kubectl get service  --> list only services
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        3d23h
+linux        NodePort    10.105.2.147    <none>        80:30753/TCP   10m
+linux1       NodePort    10.110.137.92   <none>        80:32004/TCP   3m13s
+linuxaa      NodePort    10.103.25.186   <none>        80:30608/TCP   4m5s
+
+
+http://192.168.56.112:30608/
+
+
+[root@master ~]# kubectl scale deployment web3 --replicas=3  --> to scale
+deployment.apps/web3 scaled
+
+[root@master ~]# kubectl get all
+
+kubectl describe services linux
+
+[root@master ~]# kubectl get ep   --> to checkh the mappings
+NAME         ENDPOINTS                                                        AGE
+kubernetes   192.168.56.111:6443                                              3d23h
+linux        192.168.166.134:8088,192.168.166.135:8088,192.168.166.136:8088   16m
+linux1       192.168.166.134:8089,192.168.166.135:8089,192.168.166.136:8089   8m54s
+linuxaa      192.168.166.134:80,192.168.166.135:80,192.168.166.136:80         9m46s
+
+
+=================  Rolling - Updates ==============
+[root@master ~]# kubectl get deployment
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+chethan   1/1     1            1           13h
+web3      3/3     3            3           23m
+
+[root@master ~]# kubectl get service (SVC also works )
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        3d23h
+linux        NodePort    10.105.2.147    <none>        80:30753/TCP   24m
+linux1       NodePort    10.110.137.92   <none>        80:32004/TCP   17m
+linuxaa      NodePort    10.103.25.186   <none>        80:30608/TCP   18m
+
+[root@master ~]# kubectl rollout status deployment web3
+deployment "web3" successfully rolled out
+[root@master ~]# kubectl rollout history deployment web3
+deployment.apps/web3
+REVISION  CHANGE-CAUSE
+1         <none>
+
+[root@master ~]# kubectl run web5 --image=httpd --replicas=2 --record=true  ---> record will store the commands we ran
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+deployment.apps/deployment created
+
+[root@master ~]# kubectl rollout history deployment web5
+
+
+[root@master ~]# kubectl describe pod web5 --> check the versions befor upgrade
+
+
+[root@master ~]# kubectl set  image --help
+Usage:
+  kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N
+[options]
+
+
+[root@master ~]# kubectl set image deployment web5 *=httpd:latest  ---> to upgrade to latest
+[root@master ~]# kubectl describe pod web5 --> check the version back
+
+[root@master ~]# kubectl rollout status deployment web5
+[root@master ~]# kubectl rollout undo deployment web5 ---> rollback
+[root@master ~]# kubectl rollout undo deployment web5 --to-revision=2 ---> with history verstion number
+
+
+
+
+================= drain ===========
+
+
+only on Nodes not in master:
+
+kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
+kubectl delete node <node name>
+
+kubeadm reset
+
+
